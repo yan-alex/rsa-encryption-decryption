@@ -1,14 +1,25 @@
 package com.company;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.*;
 import java.math.BigInteger;
 
-public class Main extends Application {
+public class Main extends Application implements Initializable {
+
+    public TextField nInput;
+    public Label pValue;
+    public Label qValue;
+    public Label pqTimeValue;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -19,16 +30,18 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        // write your code here
-        Map <String, BigInteger> PAndQ = findPAndQ(new BigInteger("1000"));
-        assert PAndQ != null;
-        System.out.println("p: " + PAndQ.get("p"));
-        System.out.println("q: " + PAndQ.get("q"));
-
         launch(args);
     }
 
-    private static Map<String, BigInteger> findPAndQ(BigInteger n) {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // TODO Auto-generated method stub
+    }
+
+    @FXML
+    private void findPAndQ(ActionEvent actionEvent) {
+        BigInteger n = new BigInteger(nInput.getText());
+
         //The first prime number
         BigInteger INIT_NUMBER = new BigInteger("2");
 
@@ -47,13 +60,14 @@ public class Main extends Application {
                 result.put("p", p);
                 result.put("q", q);
                 //The end of the algorithm
-                return result;
+                pValue.setText("P value: " + p);
+                qValue.setText("Q value: " + q);
+                return;
             }
             //p = the next prime number
             p = p.nextProbablePrime();
         }
         System.out.println("No solution exists");
-        return null;
     }
 
 
