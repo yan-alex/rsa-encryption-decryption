@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.*;
-import java.math.BigInteger;
 
 public class Main extends Application implements Initializable {
 
@@ -55,6 +54,8 @@ public class Main extends Application implements Initializable {
             if (n.mod(p).equals(BigInteger.ZERO)) {
                 //Calculate q
                 BigInteger q = n.divide(p);
+                // Check if q is prime. Otherwise, go to next prime p number
+                if (q.isProbablePrime(1)){
                 //Displays the result
                 Map <String, BigInteger> result = new HashMap<>();
                 result.put("p", p);
@@ -63,7 +64,9 @@ public class Main extends Application implements Initializable {
                 pValue.setText("P value: " + p);
                 qValue.setText("Q value: " + q);
                 return;
+                }
             }
+
             //p = the next prime number
             p = p.nextProbablePrime();
         }
