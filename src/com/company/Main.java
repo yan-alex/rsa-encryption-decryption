@@ -23,6 +23,8 @@ public class Main extends Application implements Initializable {
     public TextField decryptEValue;
     public TextField messageValue;
     public TextField encryptedMessageValue;
+    public TextField decryptEncryptedValue;
+    public TextField decryptedMessageValue;
 
     public Label pValue;
     public Label qValue;
@@ -79,6 +81,27 @@ public class Main extends Application implements Initializable {
     }
 
     @FXML
+    private void displayDecryptedMessage(ActionEvent actionEvent){
+
+        String input = decryptEncryptedValue.getText().replace("[", "").replace("]", "").replace(" ", "");
+
+        String[] inputAsArray = input.split(",");
+
+        ArrayList<BigInteger> inputAsBigintegers = new ArrayList<>();
+
+        for (String charValueOfLetter: inputAsArray) {
+            inputAsBigintegers.add(new BigInteger(charValueOfLetter));
+        }
+
+        ArrayList<BigInteger> decryptedMessage = decryptEncryptedMessage(inputAsBigintegers);
+
+        System.out.println("unecrypted");
+        System.out.println(decryptedMessage);
+
+        decryptedMessageValue.setText(String.valueOf(decryptedMessage));
+    }
+
+    @FXML
     private void findE(ActionEvent actionEvent) {
         this.phi = (this.p.subtract(BigInteger.valueOf(1))).multiply(this.q.subtract(BigInteger.valueOf(1)));
 
@@ -126,6 +149,18 @@ public class Main extends Application implements Initializable {
         return encryptedMessage;
     }
 
+    private ArrayList<BigInteger> decryptEncryptedMessage (ArrayList<BigInteger> encryptedMessage) {
+        ArrayList<BigInteger> decryptedMessage = new ArrayList<>();
+
+        for (BigInteger letter:
+                encryptedMessage) {
+            BigInteger decryptedLetter = letter.modPow(this.d, this.n);
+            decryptedMessage.add(decryptedLetter);
+        }
+
+        return decryptedMessage;
+    }
+
         static BigInteger gcd(BigInteger e, BigInteger z)
     {
         if (e.equals(BigInteger.valueOf(0)))
@@ -133,6 +168,8 @@ public class Main extends Application implements Initializable {
         else
             return gcd(z.mod(e), e);
     }
+
+
 
     private Map<String, BigInteger> calculatePAndQ(BigInteger n) {
 
@@ -194,6 +231,7 @@ public class Main extends Application implements Initializable {
             encoded.add(new BigInteger(String.valueOf((int)value.charAt(i))));
             //Process char
         }
+        System.out.println("encoded");
         System.out.println(encoded);
         return encoded;
     }

@@ -48,11 +48,11 @@
             </Pane>
             <Pane layoutX="306.0" layoutY="157.0" prefHeight="217.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
                <children>
-                  <Button layoutX="77.0" layoutY="96.0" mnemonicParsing="false" text="Decrypt message" />
-                  <TextField layoutX="12.0" layoutY="30.0" prefHeight="60.0" prefWidth="236.0" />
+                  <Button layoutX="77.0" layoutY="96.0" mnemonicParsing="false" text="Decrypt message" onAction="#displayDecryptedMessage"/>
+                  <TextField fx:id="decryptEncryptedValue" layoutX="12.0" layoutY="30.0" prefHeight="60.0" prefWidth="236.0" />
                   <Label layoutX="15.0" layoutY="6.0" text="Encrypted message:" />
                   <Label layoutX="15.0" layoutY="121.0" text="Decrypted message:" />
-                  <TextField layoutX="12.0" layoutY="143.0" prefHeight="60.0" prefWidth="236.0" />
+                  <TextField fx:id="decryptedMessageValue" layoutX="12.0" layoutY="143.0" prefHeight="60.0" prefWidth="236.0" />
                </children>
             </Pane>
          </children>
