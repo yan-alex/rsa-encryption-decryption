@@ -1,4 +1,5 @@
 package com.company;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.*;
@@ -19,6 +21,14 @@ public class Main extends Application implements Initializable {
     public Label pValue;
     public Label qValue;
     public Label pqTimeValue;
+    public Label eValue;
+    public Label dValue;
+
+    private int p;
+    private int q;
+    private int e;
+    private int d;
+    private int phi;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -55,15 +65,21 @@ public class Main extends Application implements Initializable {
                 //Calculate q
                 BigInteger q = n.divide(p);
                 // Check if q is prime. Otherwise, go to next prime p number
-                if (q.isProbablePrime(1)){
-                //Displays the result
-                Map <String, BigInteger> result = new HashMap<>();
-                result.put("p", p);
-                result.put("q", q);
-                //The end of the algorithm
-                pValue.setText("P value: " + p);
-                qValue.setText("Q value: " + q);
-                return;
+                if (q.isProbablePrime(1)) {
+                    //Displays the result
+                    Map<String, BigInteger> result = new HashMap<>();
+                    result.put("p", p);
+                    result.put("q", q);
+
+                    //save p and q
+                    this.p = p.intValue();
+                    this.q = q.intValue();
+
+
+                    //The end of the algorithm
+                    pValue.setText("P value: " + p);
+                    qValue.setText("Q value: " + q);
+                    return;
                 }
             }
 
@@ -73,6 +89,42 @@ public class Main extends Application implements Initializable {
         System.out.println("No solution exists");
     }
 
+    @FXML
+    private void findE(ActionEvent actionEvent) {
+        this.phi = (this.p - 1) * (this.q - 1);
+
+        System.out.println(this.phi);
+        for (this.e = 2; this.e < this.phi; this.e++) {
+            // e is for public key exponent
+            if (gcd(e, this.phi) == 1) {
+                break;
+            }
+        }
+        System.out.println(this.e);
+        eValue.setText("E value: " + this.e);
+    }
+
+    @FXML
+    private void findD(ActionEvent actionEvent) {
+        for (int i = 0; i <= 9; i++) {
+            int x = 1 + (i * this.phi);
+
+            // d is for private key exponent
+            if (x % this.e == 0) {
+                this.d = x / this.e;
+                break;
+            }
+        }
+        dValue.setText("D value: " + this.d);
+    }
+
+    static int gcd(int e, int z)
+    {
+        if (e == 0)
+            return z;
+        else
+            return gcd(z % e, e);
+    }
 
     static List<Integer> getPrimeList(final int MAX_PRIME) {
         // Initialize a boolean array and set all values to true.
