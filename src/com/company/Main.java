@@ -95,17 +95,13 @@ public class Main extends Application implements Initializable {
 
         ArrayList<BigInteger> decryptedMessage = decryptEncryptedMessage(inputAsBigintegers);
 
-        System.out.println("unecrypted");
-        System.out.println(decryptedMessage);
-
-        decryptedMessageValue.setText(String.valueOf(decryptedMessage));
+        decryptedMessageValue.setText(decodeMessage(decryptedMessage));
     }
 
     @FXML
     private void findE(ActionEvent actionEvent) {
         this.phi = (this.p.subtract(BigInteger.valueOf(1))).multiply(this.q.subtract(BigInteger.valueOf(1)));
 
-        System.out.println(this.phi);
         for (this.e = BigInteger.valueOf(2); this.e.compareTo(this.phi) < 0; this.e = this.e.add(BigInteger.ONE)) {
             // e is for public key exponent
             if (gcd(e, this.phi).equals(BigInteger.ONE)) {
@@ -231,8 +227,27 @@ public class Main extends Application implements Initializable {
             encoded.add(new BigInteger(String.valueOf((int)value.charAt(i))));
             //Process char
         }
-        System.out.println("encoded");
+        System.out.println("Encoded:");
         System.out.println(encoded);
+        System.out.println();
         return encoded;
+    }
+
+    private String decodeMessage(ArrayList<BigInteger> encodedMessage){
+        System.out.println("Encoded after decrypt:");
+        System.out.println(encodedMessage);
+        System.out.println();
+
+        StringBuilder decodedMessage = new StringBuilder();
+
+        for (int i = 0; i < encodedMessage.size(); i++){
+            decodedMessage.append(Character.toString((char) encodedMessage.get(i).intValue()));
+        }
+
+        System.out.println("Decoded message:");
+        System.out.println(decodedMessage.toString());
+        System.out.println();
+
+        return decodedMessage.toString();
     }
 }
