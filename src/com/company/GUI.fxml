@@ -21,13 +21,14 @@
                   <Button layoutX="80.0" layoutY="104.0" mnemonicParsing="false" text="Calculate P &amp; Q" onAction="#displayPAndQ" />
                </children>
             </Pane>
-            <Pane layoutX="13.0" layoutY="165.0" prefHeight="76.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
+            <Pane layoutX="13.0" layoutY="165.0" prefHeight="90.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
                <children>
                   <Label fx:id="eValue" layoutX="102.0" layoutY="14.0" text="E is (value)" />
+                  <Label fx:id="eTimeValue" layoutX="10.0" layoutY="67.0" text="It took: " />
                   <Button layoutX="93.0" layoutY="38.0" mnemonicParsing="false" text="Calculate E" onAction="#findE" />
                </children>
             </Pane>
-            <Pane layoutX="13.0" layoutY="249.0" prefHeight="217.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
+            <Pane layoutX="13.0" layoutY="269.0" prefHeight="217.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
                <children>
                   <Button  layoutX="77.0" layoutY="96.0" mnemonicParsing="false" text="Encrypt message" onAction="#displayEncryptedMessage" />
                   <TextField fx:id="messageValue" layoutX="12.0" layoutY="30.0" prefHeight="60.0" prefWidth="236.0" />

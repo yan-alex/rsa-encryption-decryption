@@ -107,6 +107,8 @@ public class Main extends Application implements Initializable {
 
     @FXML
     private void findE(ActionEvent actionEvent) {
+        long startTime = System.nanoTime();
+
         this.phi = (this.p.subtract(BigInteger.valueOf(1))).multiply(this.q.subtract(BigInteger.valueOf(1)));
 
         for (this.e = BigInteger.valueOf(2); this.e.compareTo(this.phi) < 0; this.e = this.e.add(BigInteger.ONE)) {
@@ -115,7 +117,10 @@ public class Main extends Application implements Initializable {
                 break;
             }
         }
-        System.out.println(this.e);
+
+        long estimatedTime = System.nanoTime() - startTime;
+
+        eTimeValue.setText("It took: " + (int) estimatedTime * 0.000001 + " milliseconds.");
         eValue.setText("E value: " + this.e);
     }
 
