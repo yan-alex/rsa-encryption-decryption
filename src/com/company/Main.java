@@ -29,8 +29,12 @@ public class Main extends Application implements Initializable {
     public Label pValue;
     public Label qValue;
     public Label pqTimeValue;
+
     public Label eValue;
+    public Label eTimeValue;
+
     public Label dValue;
+    public Label dTimeValue;
 
     private BigInteger p;
     private BigInteger q;
@@ -58,14 +62,17 @@ public class Main extends Application implements Initializable {
 
     @FXML
     private void displayPAndQ(ActionEvent actionEvent) {
-
+        long startTime = System.nanoTime();
         HashMap<String, BigInteger> result = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(nInput.getText()));
+        long estimatedTime = System.nanoTime() - startTime;
+
         this.n = new BigInteger(nInput.getText());
         if(result == null){
             System.out.println("No solution exists");
         }else{
             qValue.setText("Q value: " + String.valueOf(result.get("q").intValue()));
             pValue.setText("P value: " + String.valueOf(result.get("p").intValue()));
+            pqTimeValue.setText("It took: " + (int) estimatedTime * 0.000001 + " milliseconds.");
 
             this.q = result.get("q");
             this.p = result.get("p");
