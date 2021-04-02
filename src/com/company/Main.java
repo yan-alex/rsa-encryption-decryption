@@ -27,11 +27,12 @@ public class Main extends Application implements Initializable {
     public Label eValue;
     public Label dValue;
 
-    private int p;
-    private int q;
-    private int e;
-    private int d;
-    private int phi;
+    private BigInteger p;
+    private BigInteger q;
+    private BigInteger n;
+    private BigInteger e;
+    private BigInteger d;
+    private BigInteger phi;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -54,26 +55,26 @@ public class Main extends Application implements Initializable {
     private void displayPAndQ(ActionEvent actionEvent) {
 
         HashMap<String, BigInteger> result = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(nInput.getText()));
-
+        this.n = new BigInteger(nInput.getText());
         if(result == null){
             System.out.println("No solution exists");
         }else{
             qValue.setText("Q value: " + String.valueOf(result.get("q").intValue()));
             pValue.setText("P value: " + String.valueOf(result.get("p").intValue()));
 
-            this.q = result.get("q").intValue();
-            this.p = result.get("p").intValue();
+            this.q = result.get("q");
+            this.p = result.get("p");
         }
     }
 
     @FXML
     private void findE(ActionEvent actionEvent) {
-        this.phi = (this.p - 1) * (this.q - 1);
+        this.phi = (this.p.subtract(BigInteger.valueOf(1))).multiply(this.q.subtract(BigInteger.valueOf(1)));
 
         System.out.println(this.phi);
-        for (this.e = 2; this.e < this.phi; this.e++) {
+        for (this.e = BigInteger.valueOf(2); this.e.compareTo(this.phi) < 0; this.e = this.e.add(BigInteger.ONE)) {
             // e is for public key exponent
-            if (gcd(e, this.phi) == 1) {
+            if (gcd(e, this.phi).equals(BigInteger.ONE)) {
                 break;
             }
         }
@@ -86,28 +87,40 @@ public class Main extends Application implements Initializable {
         String n = decryptNValue.getText();
         HashMap<String, BigInteger> pqResult = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(n));
 
-        int phi = (pqResult.get("p").intValue() - 1) * (pqResult.get("q").intValue() - 1);
+        BigInteger phi = (pqResult.get("p").subtract(BigInteger.ONE)).multiply(pqResult.get("q").subtract(BigInteger.ONE));
 
-        int e = Integer.parseInt(decryptEValue.getText());
+        BigInteger e = new BigInteger(decryptEValue.getText());
 
         for (int i = 0; i <= 9; i++) {
-            int x = 1 + (i * phi);
+            BigInteger x = BigInteger.ONE.add(new BigInteger(String.valueOf(i)).multiply(phi));
 
             // d is for private key exponent
-            if (x % e == 0) {
-                this.d = x / e;
+            if (x.mod(e).equals(BigInteger.ZERO)) {
+                this.d = x.divide(e);
                 break;
             }
         }
         dValue.setText("D value: " + this.d);
     }
 
-    static int gcd(int e, int z)
+    private ArrayList<BigInteger> encryptEncodedMessage (ArrayList<BigInteger> encodedMessage) {
+        ArrayList<BigInteger> encryptedMessage = new ArrayList<>();
+
+        for (BigInteger letter:
+             encodedMessage) {
+            BigInteger encryptedLetter = letter.modPow(this.e, this.n);
+            encryptedMessage.add(encryptedLetter);
+        }
+
+        return encryptedMessage;
+    }
+
+        static BigInteger gcd(BigInteger e, BigInteger z)
     {
-        if (e == 0)
+        if (e.equals(BigInteger.valueOf(0)))
             return z;
         else
-            return gcd(z % e, e);
+            return gcd(z.mod(e), e);
     }
 
     @FXML
