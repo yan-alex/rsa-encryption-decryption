@@ -107,6 +107,8 @@ public class Main extends Application implements Initializable {
 
     @FXML
     private void findE(ActionEvent actionEvent) {
+        ArrayList<BigInteger> values = new ArrayList<>();
+
         long startTime = System.nanoTime();
 
         this.phi = (this.p.subtract(BigInteger.valueOf(1))).multiply(this.q.subtract(BigInteger.valueOf(1)));
@@ -114,11 +116,13 @@ public class Main extends Application implements Initializable {
         for (this.e = BigInteger.valueOf(2); this.e.compareTo(this.phi) < 0; this.e = this.e.add(BigInteger.ONE)) {
             // e is for public key exponent
             if (gcd(e, this.phi).equals(BigInteger.ONE)) {
-                break;
+                values.add(this.e);
             }
         }
 
         long estimatedTime = System.nanoTime() - startTime;
+
+        this.e = values.get((int)(Math.random() * (values.size())));
 
         eTimeValue.setText("It took: " + (int) estimatedTime * 0.000001 + " milliseconds.");
         eValue.setText("E value: " + this.e);
@@ -133,15 +137,8 @@ public class Main extends Application implements Initializable {
 
         BigInteger e = new BigInteger(decryptEValue.getText());
 
-        for (int i = 0; i <= 9; i++) {
-            BigInteger x = BigInteger.ONE.add(new BigInteger(String.valueOf(i)).multiply(phi));
+        this.d = e.modInverse(phi);
 
-            // d is for private key exponent
-            if (x.mod(e).equals(BigInteger.ZERO)) {
-                this.d = x.divide(e);
-                break;
-            }
-        }
         dValue.setText("D value: " + this.d);
     }
 
