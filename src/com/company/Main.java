@@ -18,6 +18,9 @@ import java.util.*;
 public class Main extends Application implements Initializable {
 
     public TextField nInput;
+    public TextField decryptNValue;
+    public TextField decryptEValue;
+
     public Label pValue;
     public Label qValue;
     public Label pqTimeValue;
@@ -48,8 +51,67 @@ public class Main extends Application implements Initializable {
     }
 
     @FXML
-    private void findPAndQ(ActionEvent actionEvent) {
-        BigInteger n = new BigInteger(nInput.getText());
+    private void displayPAndQ(ActionEvent actionEvent) {
+
+        HashMap<String, BigInteger> result = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(nInput.getText()));
+
+        if(result == null){
+            System.out.println("No solution exists");
+        }else{
+            qValue.setText("Q value: " + String.valueOf(result.get("q").intValue()));
+            pValue.setText("P value: " + String.valueOf(result.get("p").intValue()));
+
+            this.q = result.get("q").intValue();
+            this.p = result.get("p").intValue();
+        }
+    }
+
+    @FXML
+    private void findE(ActionEvent actionEvent) {
+        this.phi = (this.p - 1) * (this.q - 1);
+
+        System.out.println(this.phi);
+        for (this.e = 2; this.e < this.phi; this.e++) {
+            // e is for public key exponent
+            if (gcd(e, this.phi) == 1) {
+                break;
+            }
+        }
+        System.out.println(this.e);
+        eValue.setText("E value: " + this.e);
+    }
+
+    @FXML
+    private void findD(ActionEvent actionEvent) {
+        String n = decryptNValue.getText();
+        HashMap<String, BigInteger> pqResult = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(n));
+
+        int phi = (pqResult.get("p").intValue() - 1) * (pqResult.get("q").intValue() - 1);
+
+        int e = Integer.parseInt(decryptEValue.getText());
+
+        for (int i = 0; i <= 9; i++) {
+            int x = 1 + (i * phi);
+
+            // d is for private key exponent
+            if (x % e == 0) {
+                this.d = x / e;
+                break;
+            }
+        }
+        dValue.setText("D value: " + this.d);
+    }
+
+    static int gcd(int e, int z)
+    {
+        if (e == 0)
+            return z;
+        else
+            return gcd(z % e, e);
+    }
+
+    @FXML
+    private Map<String, BigInteger> calculatePAndQ(BigInteger n) {
 
         //The first prime number
         BigInteger INIT_NUMBER = new BigInteger("2");
@@ -71,59 +133,15 @@ public class Main extends Application implements Initializable {
                     result.put("p", p);
                     result.put("q", q);
 
-                    //save p and q
-                    this.p = p.intValue();
-                    this.q = q.intValue();
-
-
                     //The end of the algorithm
-                    pValue.setText("P value: " + p);
-                    qValue.setText("Q value: " + q);
-                    return;
+                    return result;
                 }
             }
 
             //p = the next prime number
             p = p.nextProbablePrime();
         }
-        System.out.println("No solution exists");
-    }
-
-    @FXML
-    private void findE(ActionEvent actionEvent) {
-        this.phi = (this.p - 1) * (this.q - 1);
-
-        System.out.println(this.phi);
-        for (this.e = 2; this.e < this.phi; this.e++) {
-            // e is for public key exponent
-            if (gcd(e, this.phi) == 1) {
-                break;
-            }
-        }
-        System.out.println(this.e);
-        eValue.setText("E value: " + this.e);
-    }
-
-    @FXML
-    private void findD(ActionEvent actionEvent) {
-        for (int i = 0; i <= 9; i++) {
-            int x = 1 + (i * this.phi);
-
-            // d is for private key exponent
-            if (x % this.e == 0) {
-                this.d = x / this.e;
-                break;
-            }
-        }
-        dValue.setText("D value: " + this.d);
-    }
-
-    static int gcd(int e, int z)
-    {
-        if (e == 0)
-            return z;
-        else
-            return gcd(z % e, e);
+        return null;
     }
 
     static List<Integer> getPrimeList(final int MAX_PRIME) {

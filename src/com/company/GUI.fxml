@@ -18,7 +18,7 @@
                   <Label fx:id="pValue" layoutX="10.0" layoutY="39.0" text="P value:" />
                   <Label fx:id="qValue" layoutX="120.0" layoutY="39.0" text="Q value:" />
                   <Label fx:id="pqTimeValue" layoutX="10.0" layoutY="67.0" text="It took: " />
-                  <Button layoutX="80.0" layoutY="104.0" mnemonicParsing="false" text="Calculate P &amp; Q" onAction="#findPAndQ" />
+                  <Button layoutX="80.0" layoutY="104.0" mnemonicParsing="false" text="Calculate P &amp; Q" onAction="#displayPAndQ" />
                </children>
             </Pane>
             <Pane layoutX="13.0" layoutY="165.0" prefHeight="76.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
@@ -39,10 +39,10 @@
             <Pane layoutX="306.0" layoutY="14.0" prefHeight="126.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
                <children>
                   <Label layoutX="10.0" layoutY="11.0" text="Input N value" />
-                  <TextField layoutX="97.0" layoutY="7.0" />
+                  <TextField fx:id="decryptNValue" layoutX="97.0" layoutY="7.0" />
                   <Button layoutX="78.0" layoutY="94.0" mnemonicParsing="false" text="Calculate D" onAction="#findD" />
-                  <Label layoutX="10.0" layoutY="42.0" text="Input E value" />
-                  <TextField layoutX="97.0" layoutY="38.0" />
+                  <Label  layoutX="10.0" layoutY="42.0" text="Input E value" />
+                  <TextField fx:id="decryptEValue" layoutX="97.0" layoutY="38.0" />
                   <Label fx:id="dValue" layoutX="24.0" layoutY="70.0" text="D value: " />
                </children>
             </Pane>
