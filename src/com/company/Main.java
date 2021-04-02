@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.*;
@@ -123,7 +124,6 @@ public class Main extends Application implements Initializable {
             return gcd(z.mod(e), e);
     }
 
-    @FXML
     private Map<String, BigInteger> calculatePAndQ(BigInteger n) {
 
         //The first prime number
@@ -175,5 +175,15 @@ public class Main extends Application implements Initializable {
         }
 
         return primes;
+    }
+
+    private ArrayList<Integer> encodeMessage(String value){
+        ArrayList<Integer> encoded = new ArrayList<Integer>();
+
+        for (int i = 0; i < value.length(); i++){
+            encoded.add ((int)value.charAt(i));
+            //Process char
+        }
+        return encoded;
     }
 }
