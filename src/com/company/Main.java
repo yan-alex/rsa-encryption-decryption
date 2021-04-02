@@ -21,6 +21,8 @@ public class Main extends Application implements Initializable {
     public TextField nInput;
     public TextField decryptNValue;
     public TextField decryptEValue;
+    public TextField messageValue;
+    public TextField encryptedMessageValue;
 
     public Label pValue;
     public Label qValue;
@@ -66,6 +68,14 @@ public class Main extends Application implements Initializable {
             this.q = result.get("q");
             this.p = result.get("p");
         }
+    }
+
+    @FXML
+    private void displayEncryptedMessage(ActionEvent actionEvent){
+        ArrayList<BigInteger> encodeMessage = encodeMessage(messageValue.getText());
+        ArrayList<BigInteger> encryptedMessage = encryptEncodedMessage(encodeMessage);
+
+        encryptedMessageValue.setText(String.valueOf(encryptedMessage));
     }
 
     @FXML
@@ -177,13 +187,14 @@ public class Main extends Application implements Initializable {
         return primes;
     }
 
-    private ArrayList<Integer> encodeMessage(String value){
-        ArrayList<Integer> encoded = new ArrayList<Integer>();
+    private ArrayList<BigInteger> encodeMessage(String value){
+        ArrayList<BigInteger> encoded = new ArrayList<BigInteger>();
 
         for (int i = 0; i < value.length(); i++){
-            encoded.add ((int)value.charAt(i));
+            encoded.add(new BigInteger(String.valueOf((int)value.charAt(i))));
             //Process char
         }
+        System.out.println(encoded);
         return encoded;
     }
 }
