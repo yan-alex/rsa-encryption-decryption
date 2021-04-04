@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox fx:controller="com.company.Main" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
          <children>
-            <Pane layoutX="13.0" layoutY="14.0" prefHeight="143.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
+            <Pane layoutX="44.0" layoutY="54.0" prefHeight="143.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
                <children>
                   <Label layoutX="10.0" layoutY="11.0" text="Input N value" />
                   <TextField fx:id="nInput" layoutX="97.0" layoutY="7.0" />
@@ -21,41 +21,51 @@
                   <Button layoutX="80.0" layoutY="104.0" mnemonicParsing="false" text="Calculate P &amp; Q" onAction="#displayPAndQ" />
                </children>
             </Pane>
-            <Pane layoutX="13.0" layoutY="165.0" prefHeight="90.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
+            <Pane layoutX="44.0" layoutY="205.0" prefHeight="100.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
                <children>
                   <Label style="-fx-alignment: center" fx:id="eValue" layoutX="102.0" layoutY="14.0" text="E is (value)" />
-                  <Label fx:id="eTimeValue" layoutX="10.0" layoutY="67.0" text="It took: " />
-                  <Button layoutX="93.0" layoutY="38.0" mnemonicParsing="false" text="Calculate E" onAction="#findE" />
+                  <Label fx:id="eTimeValue" layoutX="10.0" layoutY="38.0" text="It took: " />
+                  <Button layoutX="93.0" layoutY="67.0" mnemonicParsing="false" text="Calculate E" onAction="#findE"/>
                </children>
             </Pane>
-            <Pane layoutX="13.0" layoutY="269.0" prefHeight="217.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
+            <Pane layoutX="44.0" layoutY="320.0" prefHeight="217.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
                <children>
-                  <Button  layoutX="77.0" layoutY="96.0" mnemonicParsing="false" text="Encrypt message" onAction="#displayEncryptedMessage" />
+                  <Button onAction="#displayEncryptedMessage" layoutX="77.0" layoutY="96.0" mnemonicParsing="false" text="Encrypt message" />
                   <TextField fx:id="messageValue" layoutX="12.0" layoutY="30.0" prefHeight="60.0" prefWidth="236.0" />
                   <Label layoutX="15.0" layoutY="6.0" text="Message:" />
                   <Label layoutX="15.0" layoutY="121.0" text="Encrypted message" />
                   <TextField fx:id="encryptedMessageValue" layoutX="12.0" layoutY="143.0" prefHeight="60.0" prefWidth="236.0" />
                </children>
             </Pane>
-            <Pane layoutX="306.0" layoutY="14.0" prefHeight="126.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
+            <Pane layoutX="337.0" layoutY="54.0" prefHeight="126.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
                <children>
                   <Label layoutX="10.0" layoutY="11.0" text="Input N value" />
                   <TextField fx:id="decryptNValue" layoutX="97.0" layoutY="7.0" />
-                  <Button layoutX="78.0" layoutY="94.0" mnemonicParsing="false" text="Calculate D" onAction="#findD" />
-                  <Label  layoutX="10.0" layoutY="42.0" text="Input E value" />
+                  <Button onAction="#findD" layoutX="78.0" layoutY="94.0" mnemonicParsing="false" text="Calculate D" />
+                  <Label layoutX="10.0" layoutY="42.0" text="Input E value" />
                   <TextField fx:id="decryptEValue" layoutX="97.0" layoutY="38.0" />
                   <Label fx:id="dValue" layoutX="24.0" layoutY="70.0" text="D value: " />
                </children>
             </Pane>
-            <Pane layoutX="306.0" layoutY="157.0" prefHeight="217.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
+            <Pane layoutX="337.0" layoutY="197.0" prefHeight="217.0" prefWidth="259.0" style="-fx-background-color: darkgray;">
                <children>
-                  <Button layoutX="77.0" layoutY="96.0" mnemonicParsing="false" text="Decrypt message" onAction="#displayDecryptedMessage"/>
+                  <Button onAction="#displayDecryptedMessage" layoutX="77.0" layoutY="96.0" mnemonicParsing="false" text="Decrypt message" />
                   <TextField fx:id="decryptEncryptedValue" layoutX="12.0" layoutY="30.0" prefHeight="60.0" prefWidth="236.0" />
                   <Label layoutX="15.0" layoutY="6.0" text="Encrypted message:" />
                   <Label layoutX="15.0" layoutY="121.0" text="Decrypted message:" />
                   <TextField fx:id="decryptedMessageValue" layoutX="12.0" layoutY="143.0" prefHeight="60.0" prefWidth="236.0" />
                </children>
             </Pane>
+            <Label layoutX="123.0" layoutY="25.0" prefHeight="31.0" prefWidth="121.0" text="Encryption">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="422.0" layoutY="25.0" prefHeight="31.0" prefWidth="121.0" text="Decryption">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
          </children>
     </AnchorPane>
   </children>

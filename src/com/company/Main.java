@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.*;
@@ -34,7 +33,6 @@ public class Main extends Application implements Initializable {
     public Label eTimeValue;
 
     public Label dValue;
-    public Label dTimeValue;
 
     private BigInteger p;
     private BigInteger q;
@@ -47,7 +45,7 @@ public class Main extends Application implements Initializable {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
         stage.setTitle("RSA applicaton");
-        stage.setScene(new Scene(root, 600, 600));
+        stage.setScene(new Scene(root, 640, 540));
         stage.show();
     }
 
