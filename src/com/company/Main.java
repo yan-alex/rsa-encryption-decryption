@@ -11,10 +11,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.*;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class Main extends Application implements Initializable {
 
@@ -60,25 +65,47 @@ public class Main extends Application implements Initializable {
         // TODO Auto-generated method stub
     }
 
+    // CALCULATE BIG O
     @FXML
-    private void displayPAndQ(ActionEvent actionEvent) {
-        long startTime = System.nanoTime();
-        HashMap<String, BigInteger> result = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(nInput.getText()));
-        long estimatedTime = System.nanoTime() - startTime;
-
-        this.n = new BigInteger(nInput.getText());
-        if(result == null){
-            System.out.println("No solution exists");
-        }else{
-            qValue.setText("Q value: " + String.valueOf(result.get("q").intValue()));
-            pValue.setText("P value: " + String.valueOf(result.get("p").intValue()));
-            pqTimeValue.setText("It took: " + (int) estimatedTime * 0.000001 + " milliseconds.");
-
-            this.q = result.get("q");
-            this.p = result.get("p");
+    private void displayPAndQ(ActionEvent actionEvent) throws FileNotFoundException {
+;
+        ArrayList<String> values = new ArrayList<>();
+        for (int i = 0; i < 2500; i++) {
+            long startTime = System.nanoTime();
+            HashMap<String, BigInteger> result = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(String.valueOf(i)));
+            long estimatedTime = System.nanoTime() - startTime;
+            if (result != null){
+               String timeTook = String.format("%s; %s; %d; %f", result.get("p").toString(), result.get("q").toString(), i, (int) estimatedTime * 0.000001);
+               values.add(timeTook);
+            }
         }
+        PrintWriter out = new PrintWriter("output-jit-off.csv");
+        for(String value: values){
+            System.out.println(value);
+            out.println(value);
+        }
+        out.close();
     }
 
+// @FXML
+//    private void displayPAndQ(ActionEvent actionEvent) {
+//        long startTime = System.nanoTime();
+//        HashMap<String, BigInteger> result = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(nInput.getText()));
+//        long estimatedTime = System.nanoTime() - startTime;
+//
+//        this.n = new BigInteger(nInput.getText());
+//        if(result == null){
+//            System.out.println("No solution exists");
+//        }else{
+//            qValue.setText("Q value: " + String.valueOf(result.get("q").intValue()));
+//            pValue.setText("P value: " + String.valueOf(result.get("p").intValue()));
+//            pqTimeValue.setText("It took: " + (int) estimatedTime * 0.000001 + " milliseconds.");
+//
+//            this.q = result.get("q");
+//            this.p = result.get("p");
+//        }
+//    }
+//
     @FXML
     private void displayEncryptedMessage(ActionEvent actionEvent){
         ArrayList<BigInteger> encodeMessage = encodeMessage(messageValue.getText());
@@ -212,25 +239,25 @@ public class Main extends Application implements Initializable {
         return null;
     }
 
-    static List<Integer> getPrimeList(final int MAX_PRIME) {
-        // Initialize a boolean array and set all values to true.
-        Boolean[] isPrime = new Boolean[MAX_PRIME + 1];
-        Arrays.fill(isPrime, true);
-
-        List<Integer> primes = new ArrayList<>();
-
-        // Start from 2. 0 and 1 are not prime.
-        for (int i = 2; i * i <= MAX_PRIME; i++) {
-            // If we've found a prime, set all it's multiples as composite,
-            // and add this prime number to the list.
-            if (isPrime[i]) {
-                for (int j = i * i; j <= MAX_PRIME; j += i) isPrime[j] = false;
-                primes.add(i);
-            }
-        }
-
-        return primes;
-    }
+//    static List<Integer> getPrimeList(final int MAX_PRIME) {
+//        // Initialize a boolean array and set all values to true.
+//        Boolean[] isPrime = new Boolean[MAX_PRIME + 1];
+//        Arrays.fill(isPrime, true);
+//
+//        List<Integer> primes = new ArrayList<>();
+//
+//        // Start from 2. 0 and 1 are not prime.
+//        for (int i = 2; i * i <= MAX_PRIME; i++) {
+//            // If we've found a prime, set all it's multiples as composite,
+//            // and add this prime number to the list.
+//            if (isPrime[i]) {
+//                for (int j = i * i; j <= MAX_PRIME; j += i) isPrime[j] = false;
+//                primes.add(i);
+//            }
+//        }
+//
+//        return primes;
+//    }
 
     private ArrayList<BigInteger> encodeMessage(String value){
         ArrayList<BigInteger> encoded = new ArrayList<BigInteger>();
