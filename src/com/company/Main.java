@@ -63,19 +63,26 @@ public class Main extends Application implements Initializable {
     @FXML
     private void displayPAndQ(ActionEvent actionEvent) {
         long startTime = System.nanoTime();
-        HashMap<String, BigInteger> result = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(nInput.getText()));
-        long estimatedTime = System.nanoTime() - startTime;
+        if(isNumeric(nInput.getText())) {
+            HashMap<String, BigInteger> result = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(nInput.getText()));
+            long estimatedTime = System.nanoTime() - startTime;
 
-        this.n = new BigInteger(nInput.getText());
-        if(result == null){
-            System.out.println("No solution exists");
+            this.n = new BigInteger(nInput.getText());
+
+            if (result == null) {
+                pValue.setText("No solution exists");
+                qValue.setText("");
+            } else {
+                qValue.setText("Q value: " + String.valueOf(result.get("q").intValue()));
+                pValue.setText("P value: " + String.valueOf(result.get("p").intValue()));
+                pqTimeValue.setText("It took: " + (int) estimatedTime * 0.000001 + " milliseconds.");
+
+                this.q = result.get("q");
+                this.p = result.get("p");
+            }
         }else{
-            qValue.setText("Q value: " + String.valueOf(result.get("q").intValue()));
-            pValue.setText("P value: " + String.valueOf(result.get("p").intValue()));
-            pqTimeValue.setText("It took: " + (int) estimatedTime * 0.000001 + " milliseconds.");
-
-            this.q = result.get("q");
-            this.p = result.get("p");
+            pValue.setText("No valid N value found!");
+            qValue.setText("");
         }
     }
 
@@ -107,39 +114,56 @@ public class Main extends Application implements Initializable {
 
     @FXML
     private void findE(ActionEvent actionEvent) {
-        ArrayList<BigInteger> values = new ArrayList<>();
+        if(this.p != null && this.q != null){
+            ArrayList<BigInteger> values = new ArrayList<>();
 
-        long startTime = System.nanoTime();
+            long startTime = System.nanoTime();
 
-        this.phi = (this.p.subtract(BigInteger.valueOf(1))).multiply(this.q.subtract(BigInteger.valueOf(1)));
+            this.phi = (this.p.subtract(BigInteger.valueOf(1))).multiply(this.q.subtract(BigInteger.valueOf(1)));
 
-        for (this.e = BigInteger.valueOf(2); this.e.compareTo(this.phi) < 0; this.e = this.e.add(BigInteger.ONE)) {
-            // e is for public key exponent
-            if (gcd(e, this.phi).equals(BigInteger.ONE)) {
-                values.add(this.e);
+            for (this.e = BigInteger.valueOf(2); this.e.compareTo(this.phi) < 0; this.e = this.e.add(BigInteger.ONE)) {
+                // e is for public key exponent
+                if (gcd(e, this.phi).equals(BigInteger.ONE)) {
+                    values.add(this.e);
+                }
             }
+
+            long estimatedTime = System.nanoTime() - startTime;
+
+            this.e = values.get((int)(Math.random() * (values.size())));
+
+            eTimeValue.setText("It took: " + (int) estimatedTime * 0.000001 + " milliseconds.");
+            eValue.setText("E value: " + this.e);
+        }else{
+            eValue.setText("No P or Q found!");
         }
-
-        long estimatedTime = System.nanoTime() - startTime;
-
-        this.e = values.get((int)(Math.random() * (values.size())));
-
-        eTimeValue.setText("It took: " + (int) estimatedTime * 0.000001 + " milliseconds.");
-        eValue.setText("E value: " + this.e);
     }
 
     @FXML
     private void findD(ActionEvent actionEvent) {
-        String n = decryptNValue.getText();
-        HashMap<String, BigInteger> pqResult = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(n));
+        String nString = decryptNValue.getText();
+        String eString = decryptEValue.getText();
 
-        BigInteger phi = (pqResult.get("p").subtract(BigInteger.ONE)).multiply(pqResult.get("q").subtract(BigInteger.ONE));
+        if(isNumeric(nString) && isNumeric(eString)){
+            HashMap<String, BigInteger> pqResult = (HashMap<String, BigInteger>) calculatePAndQ(new BigInteger(nString));
 
-        BigInteger e = new BigInteger(decryptEValue.getText());
+            BigInteger phi = (pqResult.get("p").subtract(BigInteger.ONE)).multiply(pqResult.get("q").subtract(BigInteger.ONE));
 
-        this.d = e.modInverse(phi);
+            BigInteger e = new BigInteger(eString);
 
-        dValue.setText("D value: " + this.d);
+            this.d = e.modInverse(phi);
+
+            dValue.setText("D value: " + this.d);
+        }else if(isNumeric(nString) && !isNumeric(eString)){
+            dValue.setText("E value is not valid!");
+
+        }
+        else if(!isNumeric(nString) && isNumeric(eString)){
+            dValue.setText("N value is not valid!");
+
+        }else{
+            dValue.setText("E and N values are not valid!");
+        }
     }
 
     private ArrayList<BigInteger> encryptEncodedMessage (ArrayList<BigInteger> encodedMessage) {
@@ -258,5 +282,17 @@ public class Main extends Application implements Initializable {
         System.out.println();
 
         return decodedMessage.toString();
+    }
+
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 }
